@@ -43,8 +43,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files from root
-app.mount("/", StaticFiles(directory=".", html=True), name="static")
+# Mount the root directory at /static
+app.mount("/static", StaticFiles(directory=".", html=True), name="static")
+
+# Serve index.html at root
+@app.get("/")
+async def root():
+    return FileResponse("index.html")
 
 # Security
 security = HTTPBearer()

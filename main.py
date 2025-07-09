@@ -14,7 +14,7 @@ import os
 from contextlib import asynccontextmanager
 
 # Configuration
-SECRET_KEY = "your-secret-key-change-this-in-production"
+SECRET_KEY = "PannuGoodgirl"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 MONGODB_URL = "mongodb://localhost:27017"

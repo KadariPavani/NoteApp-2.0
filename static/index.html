@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteNest - Notes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- <button class="theme-toggle" onclick="toggleTheme()">🌙</button> -->
+    
+    <div id="auth-section" class="auth-container">
+        <form id="auth-form" class="auth-form">
+            <h2 id="auth-title">Login</h2>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Username or Email" required>
+            </div>
+            <div class="form-group" id="email-group" style="display: none;">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" id="auth-button" class="btn btn-primary">Login</button>
+            <div class="auth-switch">
+                <span id="auth-switch-text">Don't have an account?</span>
+                <a href="#" id="auth-switch-link">Sign up</a>
+            </div>
+        </form>
+    </div>
+
+    <div id="notes-section" class="notes-container" style="display: none;">
+        <header class="notes-header">
+            <h1 class="notes-title">My Notes</h1>
+            <div class="header-actions">
+                <span class="profile-section">Welcome, <span id="username-display">Guest</span></span>
+                <button id="new-note-btn" class="btn btn-primary">New Note</button>
+                <button id="logout-btn" class="btn btn-danger">Logout</button>
+            </div>
+        </header>
+        
+        <div class="notes-layout">
+            <div class="notes-sidebar">
+                <div class="notes-search">
+                    <input type="text" id="search-input" placeholder="Search notes...">
+                </div>
+                <div id="notes-list" class="notes-list"></div>
+            </div>
+            
+            <div id="note-editor-container" class="note-editor" style="display: none;">
+                <div class="editor-header">
+                    <input type="text" id="note-title" placeholder="Note Title" readonly>
+                    <div class="editor-actions">
+                        <button id="edit-note-btn" class="btn btn-secondary">Edit</button>
+                        <button id="save-note-btn" class="btn btn-primary" disabled>Save</button>
+                        <button id="delete-note-btn" class="btn btn-danger" disabled>Delete</button>
+                    </div>
+                </div>
+                <textarea id="note-content" placeholder="Write your note here..." readonly></textarea>
+            </div>
+            
+            <div id="empty-editor" class="empty-editor">
+                <div class="empty-message">
+                    <!-- <h3>Select a note to edit or create a new one</h3> -->
+                    <p>Choose from your existing notes or create a new one to get started</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+    
+    <div id="toast-container" class="toast-container"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

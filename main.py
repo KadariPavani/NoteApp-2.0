@@ -43,8 +43,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# Mount static files from root
+app.mount("/", StaticFiles(directory=".", html=True), name="static")
 
 # Security
 security = HTTPBearer()
@@ -258,12 +258,3 @@ async def delete_note(note_id: str, user_id: str = Depends(verify_token)):
         raise HTTPException(status_code=404, detail="Note not found")
     
     return {"message": "Note deleted successfully"}
-
-# Root route
-@app.get("/")
-async def root():
-    return FileResponse("static/landing.html")
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -51,6 +51,18 @@ app.mount("/static", StaticFiles(directory=".", html=True), name="static")
 async def root():
     return FileResponse("index.html")
 
+@app.get("/landing.html")
+async def landing():
+    return FileResponse("landing.html")
+
+@app.get("/styles.css")
+async def styles():
+    return FileResponse("styles.css")
+
+@app.get("/script.js")
+async def script():
+    return FileResponse("script.js")
+
 # Security
 security = HTTPBearer()
 

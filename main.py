@@ -66,7 +66,9 @@ app.mount("/static", StaticFiles(directory=".", html=True), name="static")
 @app.get("/")
 async def root():
     return FileResponse("landing.html")
-
+@app.get("/index.html")
+async def serve_index():
+    return FileResponse("index.html")
 @app.get("/styles.css")
 async def styles():
     return FileResponse("styles.css")

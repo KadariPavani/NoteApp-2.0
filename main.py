@@ -11,14 +11,20 @@ import bcrypt
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 import os
+import uvicorn
 from contextlib import asynccontextmanager
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Configuration
-SECRET_KEY = "PannuGoodgirl"
+SECRET_KEY = os.getenv("SECRET_KEY", "PannuGoodgirl")  # Default for local dev
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-MONGODB_URL = "mongodb://localhost:27017"
-DATABASE_NAME = "notes_app"
+MONGODB_URL = os.getenv("MONGODB_URL", "mongodb+srv://PavaniKadari:PavaniK%40123%23@infoverse.ohwzygb.mongodb.net/?retryWrites=true&w=majority")
+DATABASE_NAME = os.getenv("DATABASE_NAME", "notes_app")
 
 # Database client
 client = None
@@ -27,10 +33,20 @@ database = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global client, database
-    client = AsyncIOMotorClient(MONGODB_URL)
-    database = client[DATABASE_NAME]
+    try:
+        logger.info("Connecting to MongoDB...")
+        client = AsyncIOMotorClient(MONGODB_URL, serverSelectionTimeoutMS=30000)
+        database = client[DATABASE_NAME]
+        # Test connection
+        await client.admin.command('ping')
+        logger.info("MongoDB connection successful")
+    except Exception as e:
+        logger.error(f"Failed to connect to MongoDB: {str(e)}")
+        raise
     yield
-    client.close()
+    if client:
+        client.close()
+        logger.info("MongoDB connection closed")
 
 app = FastAPI(lifespan=lifespan)
 
@@ -275,3 +291,7 @@ async def delete_note(note_id: str, user_id: str = Depends(verify_token)):
         raise HTTPException(status_code=404, detail="Note not found")
     
     return {"message": "Note deleted successfully"}
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))  # Use Render's PORT or default to 8000
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
